@@ -1,0 +1,41 @@
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+#      defaultZone: http://${eureka.host}:8000/eureka/
+#      defaultZone: http://eureka-service:8000/eureka/
+      defaultZone: http://localhost:8000/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+spring:
+  application:
+    name: user-service
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://${mysql.address}:3306/sys-user?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    url: jdbc:mysql://localhost:3306/user-service?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    username: root
+    password: 133309
+  jpa:
+    hibernate:
+      ddl-auto: update
+ribbon:
+  ConnectTimeout: 250
+  ReadTimeout: 2000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 2
+  MaxAutoRetries: 1
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
